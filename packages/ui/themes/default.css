@@ -1,0 +1,209 @@
+/**
+ * Design tokens: :root / .dark — OKLCH.
+ * `--base-50` … `--base-950`: nötr skala (Tailwind neutral ile aynı uçlar). Sayfa ve nötr semantikler `var(--base-*)` ile türetilir.
+ * `--white`: Tailwind `white` (#fff); preset’te `bg-white` / `text-white` → `var(--white)`.
+ * `warning` / `success` / `info`: renkli durumlar (doğrudan OKLCH; base dışı kroma).
+ * `.ui-control` / `.ui-input` / `.ui-surface`: `themes/components.css` (Tailwind `@apply`).
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-sans: Inter, ui-sans-serif;
+
+  --radius: 26px;
+
+  /* Tailwind varsayılan `neutral` paleti → OKLCH (orijinal hex’lerden sRGB → Oklab dönüşümü) */
+  --base-50: oklch(0.9851 0 0);
+  --base-100: oklch(0.9702 0 0);
+  --base-200: oklch(0.9219 0 0);
+  --base-300: oklch(0.8699 0 0);
+  --base-400: oklch(0.7155 0 0);
+  --base-500: oklch(0.5555 0 0);
+  --base-600: oklch(0.4386 0 0);
+  --base-700: oklch(0.3715 0 0);
+  --base-800: oklch(0.2686 0 0);
+  --base-900: oklch(0.2046 0 0);
+  --base-950: oklch(0.1448 0 0);
+
+  /* Tailwind `white` ile aynı uç (#fff); `bg-white` → `var(--white)` */
+  --white: #ffffff;
+
+  --background: var(--base-50);
+  --foreground: var(--base-950);
+
+  --surface: var(--white);
+  --surface-foreground: var(--base-950);
+
+  --control: var(--base-100);
+  --control-foreground: var(--base-950);
+
+  --primary: var(--base-950);
+  --primary-foreground: var(--base-50);
+
+  /* İkincil dolgu: ~gray-100 (#F3F4F6 civarı) */
+  --secondary: var(--base-100);
+  --secondary-foreground: var(--base-950);
+
+  /** Durum renkleri — daha net chroma / güncel amber & mavi tonları */
+  --warning: oklch(0.78 0.15 72);
+  --warning-foreground: oklch(0.26 0.055 72);
+
+  --success: oklch(0.58 0.155 152);
+  --success-foreground: oklch(0.99 0.01 152);
+
+  --info: oklch(0.54 0.125 252);
+  --info-foreground: oklch(0.99 0.01 252);
+
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.985 0.01 27);
+
+  /**
+   * Grafik / veri görselleştirme — Tailwind indigo, primary’den bağımsız.
+   * `chart-colors.js` ve Chart.js dataset renkleri bu skalayı kullanır.
+   */
+  --chart-50: #eef2ff;
+  --chart-100: #e0e7ff;
+  --chart-200: #c7d2fe;
+  --chart-300: #a5b4fc;
+  --chart-400: #818cf8;
+  --chart-500: #6366f1;
+  --chart-600: #4f46e5;
+  --chart-700: #4338ca;
+  --chart-800: #3730a3;
+  --chart-900: #312e81;
+  --chart: var(--chart-500);
+  --chart-foreground: #ffffff;
+
+  /* İz / radio boş / slider boş uç — base-200 (#E5E7EB civarı) */
+  --muted: var(--base-200);
+  --muted-foreground: var(--base-500);
+
+  --accent: var(--base-100);
+  --accent-foreground: var(--base-900);
+
+  /* Input: hafif gri dolgu; çerçeve ~gray-200 */
+  --input-background: oklab(0.965 0 0 / 0.92);
+  --border: var(--base-200);
+
+  /** Kart / yüzey gölgesi */
+  --ui-shadow-surface:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 10px 28px rgb(0 0 0 / 0.07);
+
+  --ring: var(--base-400);
+  /** Klavye odak halkası — `components.css` içinde `--tw-ring-color` ile kullanılır */
+  --ui-focus-ring: color-mix(in oklab, var(--ring) 45%, transparent);
+
+  /** Global scrollbar — şeffaf track; yalnızca thumb görünür */
+  --ui-scrollbar-size: 8px;
+  --ui-scrollbar-track: transparent;
+  --ui-scrollbar-thumb: color-mix(in oklab, var(--foreground) 22%, transparent);
+  --ui-scrollbar-thumb-hover: color-mix(in oklab, var(--foreground) 36%, transparent);
+}
+
+.dark {
+  --white: #ffffff;
+
+  /* Sayfa derin; kart ve yüzen paneller `surface` + `.ui-surface` ile hizalanır */
+  --background: #0a0a0b;
+  --foreground: #f5f5f7;
+
+  --surface: #141416;
+  --surface-foreground: #f5f5f7;
+
+  --control: #2c2c30;
+  --control-foreground: #f5f5f7;
+
+  --primary: #f5f5f7;
+  --primary-foreground: #0a0a0b;
+
+  --secondary: #343438;
+  --secondary-foreground: #f5f5f7;
+
+  --warning: oklch(0.82 0.13 75);
+  --warning-foreground: oklch(0.22 0.05 75);
+
+  --success: oklch(0.62 0.14 152);
+  --success-foreground: oklch(0.99 0.01 152);
+
+  --info: oklch(0.72 0.11 252);
+  --info-foreground: oklch(0.99 0.01 252);
+
+  --destructive: oklch(0.62 0.19 27);
+  --destructive-foreground: oklch(0.985 0.01 27);
+
+  --chart-50: #1e1b4b;
+  --chart-100: #312e81;
+  --chart-200: #3730a3;
+  --chart-300: #4338ca;
+  --chart-400: #4f46e5;
+  --chart-500: #6366f1;
+  --chart-600: #818cf8;
+  --chart-700: #a5b4fc;
+  --chart-800: #c7d2fe;
+  --chart-900: #e0e7ff;
+  --chart: var(--chart-500);
+  --chart-foreground: #0a0a0b;
+
+  --muted: #2e2e33;
+  --muted-foreground: #98989f;
+
+  --accent: #2e2e33;
+  --accent-foreground: #f5f5f7;
+
+  /** Input kabuğu — yüzeyden hafif ayrışır; kart üzerinde yapay çerçeve oluşturmaz */
+  --input-background: color-mix(in oklab, var(--surface) 55%, var(--control) 45%);
+  --border: color-mix(in oklab, var(--foreground) 12%, transparent);
+
+  --ui-shadow-surface:
+    0 2px 8px rgb(0 0 0 / 0.22),
+    0 14px 36px rgb(0 0 0 / 0.18);
+
+  --ring: #6e6e78;
+  --ui-focus-ring: color-mix(in oklab, var(--ring) 45%, transparent);
+
+  --ui-scrollbar-track: transparent;
+  --ui-scrollbar-thumb: color-mix(in oklab, var(--foreground) 30%, transparent);
+  --ui-scrollbar-thumb-hover: color-mix(in oklab, var(--foreground) 44%, transparent);
+}
+
+html {
+  font-family: var(--font-sans);
+  scrollbar-gutter: stable;
+}
+
+/**
+ * Global scrollbar — tüm kaydırılabilir öğeler (html, overflow:auto/scroll).
+ * Track: şeffaf; thumb: yarı saydam `--foreground`.
+ */
+*,
+*::before,
+*::after {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-scrollbar-thumb) var(--ui-scrollbar-track);
+}
+
+::-webkit-scrollbar {
+  width: var(--ui-scrollbar-size);
+  height: var(--ui-scrollbar-size);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ui-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--ui-scrollbar-thumb);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ui-scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--ui-scrollbar-track);
+}

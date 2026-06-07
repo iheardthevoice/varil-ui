@@ -1,0 +1,11 @@
+{
+  "name": "ui-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "build": "pnpm -w run build:lib",
+    "docs:dev": "pnpm -w run docs:dev",
+    "docs:build": "pnpm -w run docs:build",
+    "docs:preview": "pnpm --filter @ui/docs preview"
+  }
+}
