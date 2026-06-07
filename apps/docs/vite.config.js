@@ -14,7 +14,7 @@ export default defineConfig({
     },
   },
   server: {
-    /** RestoAI uygulaması (`frontend`) varsayılan 5173 kullanır; kütüphane dokümantasyonu 5175. */
+    /** Varil uygulaması (`frontend`) varsayılan 5173 kullanır; kütüphane dokümantasyonu 5175. */
     port: 5175,
     fs: {
       allow: [uiRoot, __dirname],
