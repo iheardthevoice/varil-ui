@@ -1,5 +1,5 @@
 node_modules
-dist
+# packages/ui/dist repoda tutulur (varil-frontend / Cloudflare git tüketicileri)
 .DS_Store
 *.log
 coverage
