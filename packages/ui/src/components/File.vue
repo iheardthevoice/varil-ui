@@ -229,7 +229,7 @@ export default {
     },
     resolvedIconType() {
       if (this.icon) return this.iconType
-      return this.inferredMeta.type || 'solid'
+      return this.inferredMeta.type || 'light'
     },
     resolvedColorClass() {
       if (this.color) {

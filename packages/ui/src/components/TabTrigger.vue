@@ -75,9 +75,9 @@ export default {
     tabIconSize() {
       return this.triggerKind === 'segmented' ? 'md' : 'xs'
     },
-    /** FA Free: `regular` kümesi eksik olabiliyor; segment kartında hep `solid`. */
+    /** FA Pro: segment kartlarında da varsayılan `light` kullanılır. */
     tabIconType() {
-      return this.triggerKind === 'segmented' ? 'solid' : this.iconType
+      return this.iconType
     },
     isSelected() {
       if (!this.uiTabs) return false

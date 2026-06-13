@@ -3567,7 +3567,7 @@ const Qe = {
       return this.icon ? this.icon : this.inferredMeta.icon;
     },
     resolvedIconType() {
-      return this.icon ? this.iconType : this.inferredMeta.type || "solid";
+      return this.icon ? this.iconType : this.inferredMeta.type || "light";
     },
     resolvedColorClass() {
       return this.color ? Qe[this.color] !== void 0 ? Qe[this.color] || "" : this.color : this.inferredMeta.color || "text-foreground";
@@ -3778,7 +3778,7 @@ const Cs = /* @__PURE__ */ _(bs, [["render", xs]]), Ts = ["solid", "regular", "b
     },
     iconClass() {
       return S(
-        "ui-icon not-italic inline-block shrink-0",
+        "ui-icon fa not-italic inline-block shrink-0",
         this.faWeightClass,
         this.name ? `fa-${this.name}` : "",
         Ls[this.size],
@@ -7432,9 +7432,9 @@ const qu = /* @__PURE__ */ _(Gu, [["render", Uu]]), Zu = ["solid", "regular", "b
     tabIconSize() {
       return this.triggerKind === "segmented" ? "md" : "xs";
     },
-    /** FA Free: `regular` kümesi eksik olabiliyor; segment kartında hep `solid`. */
+    /** FA Pro: segment kartlarında da varsayılan `light` kullanılır. */
     tabIconType() {
-      return this.triggerKind === "segmented" ? "solid" : this.iconType;
+      return this.iconType;
     },
     isSelected() {
       return this.uiTabs ? this.uiTabs.isSelected(this.value) : !1;
@@ -8118,7 +8118,7 @@ function Rd(e, t, r, s, l, i) {
         r.favorite ? (n(), a("span", zd, [
           b(o, {
             name: "star",
-            type: "solid",
+            type: "light",
             size: "xs"
           })
         ])) : f("", !0),

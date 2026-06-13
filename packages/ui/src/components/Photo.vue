@@ -33,7 +33,7 @@
     >
       <ui-icon
         name="star"
-        type="solid"
+        type="light"
         size="xs"
       />
     </span>

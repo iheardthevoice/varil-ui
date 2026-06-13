@@ -69,7 +69,7 @@ export default {
     },
     iconClass() {
       return cn(
-        'ui-icon not-italic inline-block shrink-0',
+        'ui-icon fa not-italic inline-block shrink-0',
         this.faWeightClass,
         this.name ? `fa-${this.name}` : '',
         sizeClasses[this.size],
