@@ -67,7 +67,17 @@
 <script>
 import { isMobileViewport } from '../utils/viewport.js'
 
-const PLACEMENTS = ['bottom-start', 'bottom-end', 'bottom']
+const PLACEMENTS = [
+  'bottom-start',
+  'bottom-end',
+  'bottom',
+  'right-start',
+  'right-end',
+  'left-start',
+  'left-end',
+  'top-start',
+  'top-end',
+]
 
 /** Görünüm kenarı ile panel arası minimum boşluk (px) */
 const VIEW_MARGIN = 10
@@ -263,21 +273,70 @@ export default {
       }
 
       this.mobileCenteredActive = false
-      let top = r.bottom + margin
-      let left = r.left
+      let top
+      let left
 
-      if (this.placement === 'bottom-end') {
-        left = r.right - panelW
-      } else if (this.placement === 'bottom') {
-        left = r.left + (r.width - panelW) / 2
+      switch (this.placement) {
+        case 'right-start':
+          top = r.top
+          left = r.right + margin
+          break
+        case 'right-end':
+          top = r.bottom - panelH
+          left = r.right + margin
+          break
+        case 'left-start':
+          top = r.top
+          left = r.left - margin - panelW
+          break
+        case 'left-end':
+          top = r.bottom - panelH
+          left = r.left - margin - panelW
+          break
+        case 'top-start':
+          top = r.top - margin - panelH
+          left = r.left
+          break
+        case 'top-end':
+          top = r.top - margin - panelH
+          left = r.right - panelW
+          break
+        case 'bottom-end':
+          top = r.bottom + margin
+          left = r.right - panelW
+          break
+        case 'bottom':
+          top = r.bottom + margin
+          left = r.left + (r.width - panelW) / 2
+          break
+        case 'bottom-start':
+        default:
+          top = r.bottom + margin
+          left = r.left
+          break
+      }
+
+      if (this.placement.startsWith('right') && left + panelW > vw - margin) {
+        left = r.left - margin - panelW
+      }
+      if (this.placement.startsWith('left') && left < margin) {
+        left = r.right + margin
+      }
+      if (this.placement.startsWith('top') && top < margin) {
+        top = r.bottom + margin
       }
 
       if (left + panelW > vw - margin) left = Math.max(margin, vw - margin - panelW)
       if (left < margin) left = margin
 
-      if (top + panelH > vh - margin) {
+      if (this.placement.startsWith('bottom') && top + panelH > vh - margin) {
         const above = r.top - margin - panelH
         if (above >= margin) top = above
+      }
+
+      if (this.placement.startsWith('right') || this.placement.startsWith('left')) {
+        if (top + panelH > vh - margin) top = Math.max(margin, vh - margin - panelH)
+        if (top < margin) top = margin
       }
 
       const minW =

@@ -59,7 +59,17 @@
 <script>
 import Divider from './Divider.vue'
 
-const PLACEMENTS = ['bottom-start', 'bottom-end', 'bottom']
+const PLACEMENTS = [
+  'bottom-start',
+  'bottom-end',
+  'bottom',
+  'right-start',
+  'right-end',
+  'left-start',
+  'left-end',
+  'top-start',
+  'top-end',
+]
 
 export default {
   name: 'Dropdown',
