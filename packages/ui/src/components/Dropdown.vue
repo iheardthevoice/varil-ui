@@ -3,6 +3,7 @@
     :open="isOpen"
     :placement="placement"
     :match-trigger-width="matchTriggerWidth"
+    :block="block"
     :close-on-outside-click="closeOnOutsideClick"
     :close-on-escape="closeOnEscape"
     :outside-click-ignore-selector="outsideClickIgnoreSelector"
@@ -87,6 +88,11 @@ export default {
       validator: (v) => PLACEMENTS.includes(v),
     },
     matchTriggerWidth: {
+      type: Boolean,
+      default: false,
+    },
+    /** Tetikleyici tam genişlik */
+    block: {
       type: Boolean,
       default: false,
     },

@@ -353,7 +353,7 @@ export default {
     },
     rootLayerClasses() {
       return cn(
-        'ui-dialog-root fixed inset-0 flex items-center justify-center p-4 outline-none',
+        'ui-dialog-root fixed inset-0 flex outline-none',
         this.stackLayer === 'confirm' && 'ui-dialog-root--confirm',
       )
     },

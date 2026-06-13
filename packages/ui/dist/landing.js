@@ -1,49 +1,51 @@
-import { l as g, t as p, n as b, A as f, a as m, B as d, b as T, C as L, D as h, c as A, F as k, I as C, e as P, P as S, R as B, f as O, S as R, g as D, T as G, i as I, h as M } from "./apply-theme-Gyy2vWE9.js";
-import { p as _ } from "./apply-theme-Gyy2vWE9.js";
-const w = {
-  en: b,
+import { m as g, t as p, o as m, A as b, a as f, B as d, b as T, C as L, D as h, c as A, E as P, F as k, I as C, e as S, P as y, f as B, R as E, g as O, S as R, h as v, T as D, j as G, i as I } from "./apply-theme-CVUYw3KK.js";
+import { p as j } from "./apply-theme-CVUYw3KK.js";
+const M = {
+  en: m,
   tr: p
-}, x = [
-  ["ui-action-group", f],
-  ["ui-alert", m],
+}, w = [
+  ["ui-action-group", b],
+  ["ui-alert", f],
   ["ui-badge", d],
   ["ui-button", T],
   ["ui-card", L],
   ["ui-date-picker", h],
   ["ui-dialog", A],
+  ["ui-empty", P],
   ["ui-form-row", k],
   ["ui-icon", C],
-  ["ui-input", P],
-  ["ui-phone", S],
-  ["ui-radio", B],
+  ["ui-input", S],
+  ["ui-phone", y],
+  ["ui-popover", B],
+  ["ui-radio", E],
   ["ui-radio-group", O],
   ["ui-select", R],
-  ["ui-skeleton", D],
-  ["ui-tab-list", G],
-  ["ui-tabs", I],
-  ["ui-tab-trigger", M]
+  ["ui-skeleton", v],
+  ["ui-tab-list", D],
+  ["ui-tabs", G],
+  ["ui-tab-trigger", I]
 ];
-function y(r, c = {}) {
+function x(n, u = {}) {
   var t, l;
-  const { i18n: a, locale: i, locales: u, theme: s } = c;
+  const { i18n: a, locale: i, locales: c, theme: s } = u;
   if (s && g(s), (t = a == null ? void 0 : a.global) != null && t.mergeLocaleMessage) {
-    const e = u ?? (i != null ? [i] : [
+    const e = c ?? (i != null ? [i] : [
       typeof a.global.locale == "string" ? a.global.locale : ((l = a.global.locale) == null ? void 0 : l.value) ?? "tr"
     ]);
     for (const o of e) {
-      const n = w[o];
-      n && a.global.mergeLocaleMessage(o, n);
+      const r = M[o];
+      r && a.global.mergeLocaleMessage(o, r);
     }
   }
-  for (const [e, o] of x)
-    r.component(e, o);
+  for (const [e, o] of w)
+    n.component(e, o);
 }
-const F = {
-  install: y
+const N = {
+  install: x
 };
 export {
   g as applyUiTheme,
-  F as default,
-  _ as mergeUiTheme
+  N as default,
+  j as mergeUiTheme
 };
 //# sourceMappingURL=landing.js.map

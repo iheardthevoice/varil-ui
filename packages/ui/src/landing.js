@@ -5,10 +5,12 @@ import Button from './components/Button.vue'
 import Card from './components/Card.vue'
 import DatePicker from './components/DatePicker.vue'
 import Dialog from './components/Dialog.vue'
+import Empty from './components/Empty.vue'
 import FormRow from './components/FormRow.vue'
 import Icon from './components/Icon.vue'
 import Input from './components/Input.vue'
 import Phone from './components/Phone.vue'
+import Popover from './components/Popover.vue'
 import Radio from './components/Radio.vue'
 import RadioGroup from './components/RadioGroup.vue'
 import Select from './components/Select.vue'
@@ -35,10 +37,12 @@ const GLOBAL_COMPONENTS = [
   ['ui-card', Card],
   ['ui-date-picker', DatePicker],
   ['ui-dialog', Dialog],
+  ['ui-empty', Empty],
   ['ui-form-row', FormRow],
   ['ui-icon', Icon],
   ['ui-input', Input],
   ['ui-phone', Phone],
+  ['ui-popover', Popover],
   ['ui-radio', Radio],
   ['ui-radio-group', RadioGroup],
   ['ui-select', Select],

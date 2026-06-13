@@ -1,12 +1,11 @@
 <template>
   <div
     ref="rootRef"
-    class="ui-popover relative shrink-0"
-    :class="$attrs.class"
+    :class="[rootShellClass, $attrs.class]"
   >
     <div
       ref="triggerRef"
-      class="ui-popover-trigger inline-flex shrink-0"
+      :class="triggerShellClass"
     >
       <slot
         name="trigger"
@@ -83,7 +82,7 @@ const PLACEMENTS = [
 const VIEW_MARGIN = 10
 
 /** `components.css` ile uyumlu; açık dialog varsa üstüne çıkar */
-const POPOVER_BASE_Z_INDEX = 260
+const POPOVER_BASE_Z_INDEX = 410
 
 /**
  * Dış tıklama: alt popover katmanına tıklanınca üst popover kapanmaz.
@@ -158,6 +157,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    /** true: tetikleyici satır genişliğini doldurur (sidebar footer vb.) */
+    block: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:open'],
   data() {
@@ -168,6 +172,16 @@ export default {
     }
   },
   computed: {
+    rootShellClass() {
+      return this.block
+        ? 'ui-popover ui-popover--block relative w-full min-w-0 max-w-full'
+        : 'ui-popover relative shrink-0'
+    },
+    triggerShellClass() {
+      return this.block
+        ? 'ui-popover-trigger ui-popover-trigger--block flex w-full min-w-0 max-w-full'
+        : 'ui-popover-trigger inline-flex shrink-0'
+    },
     resolvedWidth() {
       const w = this.width
       if (w == null || w === '') return null
