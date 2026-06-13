@@ -17,6 +17,9 @@
     ".": {
       "import": "./dist/index.js"
     },
+    "./landing": {
+      "import": "./dist/landing.js"
+    },
     "./style.css": "./themes/default.css",
     "./components.css": "./themes/components.css",
     "./tailwind-preset": "./tailwind-preset.cjs"

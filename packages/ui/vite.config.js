@@ -9,10 +9,12 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.js'),
-      name: 'UiLib',
-      fileName: 'index',
+      entry: {
+        index: resolve(__dirname, 'src/index.js'),
+        landing: resolve(__dirname, 'src/landing.js'),
+      },
       formats: ['es'],
+      fileName: (_format, entryName) => `${entryName}.js`,
     },
     rollupOptions: {
       external: ['vue', 'vue-i18n', 'vue-router'],
