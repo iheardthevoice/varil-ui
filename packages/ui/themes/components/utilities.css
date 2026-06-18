@@ -1,0 +1,36 @@
+/**
+ * Bileşen yardımcıları — yalnızca Tailwind `@apply` (PostCSS + Tailwind ile işlenmeli).
+ * Tema token’ları: `import '@ui/lib/style.css'` veya `themes/default.css` önce yüklensin.
+ *
+ * Yüzey kabuğu: `.ui-surface` — Card, Popover panel, Dialog panel (aynı `rounded-3xl`, `shadow-lg`, `bg-surface`).
+ * Boyut referansı (md): h 36px, yatay padding 12px, gap 6px, kontrol metni 14px/20px, font-weight 500,
+ * köşe `rounded-lg` → `--radius` (26px). Card: kökte `gap-4` + `p-6`, `border-border`.
+ * Başlıklar: `ui-heading-3` = 16px / 24px satır / font-medium (text-base leading-6); üst seviyeler büyük, altı text-sm → text-xs.
+ * Yardımcı / gövde varsayılanı: `ui-text-default` = 14px / 20px satır / `text-muted-foreground` (oklch ~0.556); kart gövdesi aynı tabanı kullanır.
+ *
+ * TW v4: `ui-field-control-fill` / `ui-field-control-focus` — `@utility` (aşağıda);
+ * `@apply` ile kullanılabilir; `.ui-input` vb. bileşenlerde paylaşılır.
+ */
+
+/** Form kontrol dolgu — `--input-background` */
+@utility ui-field-control-fill {
+  @apply border border-transparent text-foreground;
+  background-color: var(--input-background);
+  -webkit-backdrop-filter: blur(var(--ui-input-backdrop-blur));
+  backdrop-filter: blur(var(--ui-input-backdrop-blur));
+}
+
+@utility ui-field-control-focus {
+  @apply ring-2 ring-offset-2 ring-offset-background;
+  --tw-ring-color: var(--ui-focus-ring);
+}
+
+/** Kaydırma çubuğunu gizle (yatay sekme listesi, sidebar nav vb.) */
+@utility ui-scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

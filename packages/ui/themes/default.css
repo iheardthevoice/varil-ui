@@ -4,9 +4,8 @@
  * `--white`: Tailwind `white` (#fff); preset’te `bg-white` / `text-white` → `var(--white)`.
  * `warning` / `success` / `info`: renkli durumlar (doğrudan OKLCH; base dışı kroma).
  * `.ui-control` / `.ui-input` / `.ui-surface`: `themes/components.css` (Tailwind `@apply`).
+ * Inter font: uygulama `index.html` link ile yükler (`@import` CSS birleştirmede kırılır).
  */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --font-sans: Inter, ui-sans-serif;
@@ -118,21 +117,21 @@
 .dark {
   --white: #ffffff;
 
-  /* Sayfa derin; kart ve yüzen paneller `surface` + `.ui-surface` ile hizalanır */
-  --background: #0a0a0b;
-  --foreground: #f5f5f7;
+  /* Nötr skala türevleri — light `:root` `--base-*` OKLCH ile simetrik */
+  --background: var(--base-950);
+  --foreground: var(--base-50);
 
-  --surface: #141416;
-  --surface-foreground: #f5f5f7;
+  --surface: var(--base-900);
+  --surface-foreground: var(--base-50);
 
-  --control: #2c2c30;
-  --control-foreground: #f5f5f7;
+  --control: var(--base-800);
+  --control-foreground: var(--base-50);
 
-  --primary: #f5f5f7;
-  --primary-foreground: #0a0a0b;
+  --primary: var(--base-50);
+  --primary-foreground: var(--base-950);
 
-  --secondary: #343438;
-  --secondary-foreground: #f5f5f7;
+  --secondary: var(--base-800);
+  --secondary-foreground: var(--base-50);
 
   --warning: oklch(0.82 0.13 75);
   --warning-foreground: oklch(0.22 0.05 75);
@@ -157,13 +156,13 @@
   --chart-800: #c7d2fe;
   --chart-900: #e0e7ff;
   --chart: var(--chart-500);
-  --chart-foreground: #0a0a0b;
+  --chart-foreground: var(--base-950);
 
-  --muted: #2e2e33;
-  --muted-foreground: #98989f;
+  --muted: var(--base-800);
+  --muted-foreground: var(--base-400);
 
-  --accent: #2e2e33;
-  --accent-foreground: #f5f5f7;
+  --accent: var(--base-800);
+  --accent-foreground: var(--base-50);
 
   /** Input kabuğu — yüzeyden hafif ayrışır; kart üzerinde yapay çerçeve oluşturmaz */
   --ui-input-mix-from: color-mix(in oklab, var(--surface) 55%, var(--control) 45%);
@@ -173,7 +172,7 @@
     0 2px 8px rgb(0 0 0 / 0.22),
     0 14px 36px rgb(0 0 0 / 0.18);
 
-  --ring: #6e6e78;
+  --ring: var(--base-500);
   --ui-focus-ring: color-mix(in oklab, var(--ring) 45%, transparent);
 
   --ui-scrollbar-track: transparent;

@@ -172,9 +172,10 @@
 
 <script>
 import { RouterLink } from 'vue-router'
+import { resolveUiText } from '../utils/resolve-ui-text.js'
 
 const sizes = ['sm', 'md', 'lg']
-const variants = ['solid', 'outline', 'ghost', 'link']
+const variants = ['solid', 'outline', 'ghost', 'link', 'nav']
 const colors = ['primary', 'secondary', 'input', 'warning', 'success', 'info']
 
 const NATIVE_TYPES = ['button', 'submit', 'reset']
@@ -250,6 +251,20 @@ const VARIANT_COLOR_CLASSES = {
       'border-0 bg-transparent p-0 !h-auto !min-h-0 shadow-none text-success underline-offset-4 hover:underline',
     info: 'border-0 bg-transparent p-0 !h-auto !min-h-0 shadow-none text-info underline-offset-4 hover:underline',
   },
+  nav: {
+    primary:
+      'shadow-none border-0 bg-transparent text-foreground hover:bg-transparent',
+    secondary:
+      'shadow-none border-0 bg-transparent text-secondary-foreground hover:bg-transparent',
+    input:
+      'shadow-none border-0 bg-transparent text-foreground hover:bg-transparent',
+    warning:
+      'shadow-none border-0 bg-transparent text-warning hover:bg-transparent',
+    success:
+      'shadow-none border-0 bg-transparent text-success hover:bg-transparent',
+    info:
+      'shadow-none border-0 bg-transparent text-info hover:bg-transparent',
+  },
 }
 
 export default {
@@ -311,6 +326,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    /** `fulled` ile aynı — tam genişlik düğme. */
+    block: {
+      type: Boolean,
+      default: false,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -348,10 +368,7 @@ export default {
       if (this.loadingText != null && this.loadingText !== '') {
         return this.loadingText
       }
-      if (typeof this.$t === 'function') {
-        return this.$t('ui.button.loading')
-      }
-      return ''
+      return resolveUiText(this, 'ui.button.loading', 'Loading')
     },
     textContentClass() {
       const align = this.textAlign === 'left' ? 'text-left' : 'text-center'
@@ -368,30 +385,35 @@ export default {
     },
     buttonClasses() {
       const isLink = this.variant === 'link'
+      const isNav = this.variant === 'nav'
       let sizeOrCubed
-      if (this.cubed && !isLink) {
+      if (this.cubed && !isLink && !isNav) {
         sizeOrCubed = cubedSizeClasses[this.size] || cubedSizeClasses.md
       } else if (isLink) {
         sizeOrCubed = linkSizeClasses[this.size]
+      } else if (isNav) {
+        sizeOrCubed = 'h-auto min-h-0 w-full max-w-full justify-start overflow-hidden p-0 !min-h-0'
       } else {
         sizeOrCubed = sizeClasses[this.size] || sizeClasses.md
       }
 
       let roundedClass = ''
-      if (!isLink) {
+      if (!isLink && !isNav) {
         if (this.rounded && !this.cubed) roundedClass = 'rounded-full'
         else if (this.cubed) roundedClass = 'rounded-full'
       }
 
       const variantColor =
-        VARIANT_COLOR_CLASSES[this.variant][this.color] ||
+        VARIANT_COLOR_CLASSES[this.variant]?.[this.color] ||
         VARIANT_COLOR_CLASSES.solid.primary
+
+      const isBlock = this.fulled || this.block
 
       return [
         'ui-button ui-control font-sans',
         variantColor,
         sizeOrCubed,
-        this.fulled ? 'ui-button--fulled w-full' : '',
+        isBlock ? 'ui-button--fulled w-full' : '',
         roundedClass,
         this.isDisabled ? 'cursor-not-allowed opacity-50' : '',
         this.hasRouterTo ? 'inline-flex items-center' : '',

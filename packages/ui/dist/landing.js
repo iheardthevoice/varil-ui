@@ -1,5 +1,5 @@
-import { m as g, t as p, o as m, A as b, a as f, B as d, b as T, C as L, D as h, c as A, E as P, F as k, I as C, e as S, P as y, f as B, R as E, g as O, S as R, h as v, T as D, j as G, i as I } from "./apply-theme-CVUYw3KK.js";
-import { p as j } from "./apply-theme-CVUYw3KK.js";
+import { m as g, u as p, q as m, A as b, a as f, B as d, b as T, C as L, D as h, c as A, E as P, F as k, I as C, e as S, P as y, f as B, R as E, g as O, S as R, h as v, T as D, j as G, i as I } from "./apply-theme-D-laL1ze.js";
+import { r as j } from "./apply-theme-D-laL1ze.js";
 const M = {
   en: m,
   tr: p
@@ -25,9 +25,9 @@ const M = {
   ["ui-tabs", G],
   ["ui-tab-trigger", I]
 ];
-function x(n, u = {}) {
+function x(u, n = {}) {
   var t, l;
-  const { i18n: a, locale: i, locales: c, theme: s } = u;
+  const { i18n: a, locale: i, locales: c, theme: s } = n;
   if (s && g(s), (t = a == null ? void 0 : a.global) != null && t.mergeLocaleMessage) {
     const e = c ?? (i != null ? [i] : [
       typeof a.global.locale == "string" ? a.global.locale : ((l = a.global.locale) == null ? void 0 : l.value) ?? "tr"
@@ -38,7 +38,7 @@ function x(n, u = {}) {
     }
   }
   for (const [e, o] of w)
-    n.component(e, o);
+    u.component(e, o);
 }
 const N = {
   install: x

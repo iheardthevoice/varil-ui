@@ -15,7 +15,6 @@
           :id="resolvedId"
           variant="solid"
           color="input"
-          rounded
           fulled
           text-align="left"
           prefix-icon="calendar"

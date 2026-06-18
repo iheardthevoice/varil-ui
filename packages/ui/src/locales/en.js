@@ -80,6 +80,11 @@ export default {
       thisMonth: 'This month ({month})',
       lastMonth: 'Last month ({month})',
     },
+    timePicker: {
+      placeholder: 'Select time',
+      hourAria: 'Hour',
+      minuteAria: 'Minute',
+    },
     photo: {
       fallbackAlt: 'Photo',
       previewAria: 'Photo preview',

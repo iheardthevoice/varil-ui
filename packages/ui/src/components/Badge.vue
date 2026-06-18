@@ -98,10 +98,10 @@ export default {
       type: Boolean,
       default: true,
     },
-    /** Tailwind max-w-* anahtarı: 32 (varsayılan), 40, 48, full */
+    /** Tailwind max-w-* anahtarı: full (varsayılan), 32, 40, 48 */
     maxWidth: {
       type: String,
-      default: '32',
+      default: 'full',
       validator: (v) => Object.keys(LABEL_WIDTH_CLASSES).includes(v),
     },
     /** Tooltip metni; boşsa slot metni kullanılır */

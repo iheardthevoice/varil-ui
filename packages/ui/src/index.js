@@ -1,3 +1,5 @@
+import ActionCard from './components/ActionCard.vue'
+import ActionCardList from './components/ActionCardList.vue'
 import ActionGroup from './components/ActionGroup.vue'
 import Alert from './components/Alert.vue'
 import Avatar from './components/Avatar.vue'
@@ -63,6 +65,9 @@ import tr from './locales/tr.js'
 import { applyUiTheme } from './theme/apply-theme.js'
 
 export { applyUiTheme, mergeUiTheme } from './theme/apply-theme.js'
+export { createUiId, createUiIdFactory } from './utils/ui-id.js'
+export { resolveUiText } from './utils/resolve-ui-text.js'
+export { pickPassthroughAttrs } from './utils/pick-passthrough-attrs.js'
 export { pushToast, dismissToast, clearToasts } from './toast-queue.js'
 export { requestConfirm } from './confirm-state.js'
 export {
@@ -77,6 +82,8 @@ export { useDialog } from './composables/useDialog.js'
 export { useConfirm } from './composables/useConfirm.js'
 
 export {
+  ActionCard,
+  ActionCardList,
   ActionGroup,
   Alert,
   Avatar,
@@ -158,6 +165,8 @@ export const uiMessagesTr = tr
 
 /** Global tag names (`<ui-button>`, `<ui-card>`, …). */
 const GLOBAL_COMPONENTS = [
+  ['ui-action-card', ActionCard],
+  ['ui-action-card-list', ActionCardList],
   ['ui-action-group', ActionGroup],
   ['ui-alert', Alert],
   ['ui-avatar', Avatar],

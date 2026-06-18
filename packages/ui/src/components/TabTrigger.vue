@@ -18,7 +18,7 @@
       class="ui-tab-trigger-icon"
       aria-hidden="true"
     />
-    <span class="ui-tab-trigger-label min-w-0 truncate">
+    <span class="ui-tab-trigger-label min-w-0 whitespace-nowrap">
       <slot>{{ label }}</slot>
     </span>
   </button>

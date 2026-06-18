@@ -31,6 +31,7 @@
 let tooltipUid = 0
 
 const PLACEMENTS = ['top', 'bottom', 'left', 'right']
+const VIEW_MARGIN = 8
 
 export default {
   name: 'Tooltip',
@@ -147,11 +148,12 @@ export default {
       const root = this.$refs.wrapperRef
       if (!root) return
       const rect = root.getBoundingClientRect()
-      const gap = 8
+      const gap = VIEW_MARGIN
       const cx = rect.left + rect.width / 2
       const cy = rect.top + rect.height / 2
+      let placement = this.placement
       let style = {}
-      switch (this.placement) {
+      switch (placement) {
         case 'bottom':
           style = {
             left: `${cx}px`,
@@ -182,6 +184,58 @@ export default {
           }
       }
       this.panelStyle = style
+      this.$nextTick(() => {
+        this.clampToViewport(rect, placement, gap)
+      })
+    },
+    clampToViewport(triggerRect, placement, gap) {
+      const panel = this.$refs.panelRef
+      if (!panel) return
+
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+      let panelRect = panel.getBoundingClientRect()
+
+      if (placement === 'top' && panelRect.top < VIEW_MARGIN) {
+        this.panelStyle = {
+          left: `${triggerRect.left + triggerRect.width / 2}px`,
+          top: `${triggerRect.bottom + gap}px`,
+          transform: 'translate(-50%, 0)',
+        }
+        panelRect = panel.getBoundingClientRect()
+      } else if (placement === 'bottom' && panelRect.bottom > vh - VIEW_MARGIN) {
+        this.panelStyle = {
+          left: `${triggerRect.left + triggerRect.width / 2}px`,
+          top: `${triggerRect.top - gap}px`,
+          transform: 'translate(-50%, -100%)',
+        }
+        panelRect = panel.getBoundingClientRect()
+      }
+
+      let dx = 0
+      let dy = 0
+      if (panelRect.left < VIEW_MARGIN) {
+        dx = VIEW_MARGIN - panelRect.left
+      } else if (panelRect.right > vw - VIEW_MARGIN) {
+        dx = vw - VIEW_MARGIN - panelRect.right
+      }
+      if (panelRect.top < VIEW_MARGIN) {
+        dy = VIEW_MARGIN - panelRect.top
+      } else if (panelRect.bottom > vh - VIEW_MARGIN) {
+        dy = vh - VIEW_MARGIN - panelRect.bottom
+      }
+
+      if (dx === 0 && dy === 0) return
+
+      const left = parseFloat(this.panelStyle.left)
+      const top = parseFloat(this.panelStyle.top)
+      if (!Number.isFinite(left) || !Number.isFinite(top)) return
+
+      this.panelStyle = {
+        ...this.panelStyle,
+        left: `${left + dx}px`,
+        top: `${top + dy}px`,
+      }
     },
   },
 }

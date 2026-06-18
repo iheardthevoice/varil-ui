@@ -22,6 +22,7 @@
         <div
           ref="panelRef"
           :class="panelClasses"
+          :style="panelStyle"
           role="dialog"
           aria-modal="true"
           tabindex="-1"
@@ -112,7 +113,11 @@
           <div
             v-if="$slots.default"
             class="ui-card-body ui-text-default"
-            :class="{ 'ui-card-body--row': row }"
+            :class="{
+              'ui-card-body--row': row,
+              'ui-card-body--flush': bodyPadding === 'none',
+              'ui-card-body--flex': bodyLayout === 'flex',
+            }"
           >
             <slot />
           </div>
@@ -132,10 +137,13 @@
 <script>
 import Divider from './Divider.vue'
 import { cn } from '../utils/cn.js'
+import { createUiIdFactory } from '../utils/ui-id.js'
+import { resolveUiText } from '../utils/resolve-ui-text.js'
+import { pickPassthroughAttrs } from '../utils/pick-passthrough-attrs.js'
 import { focusFirstField } from '../utils/focus-first-field.js'
 import { isMobileViewport } from '../utils/viewport.js'
 
-let dialogCounter = 0
+const nextDialogId = createUiIdFactory('ui-dialog')
 
 const BORDER_TYPES = ['solid', 'dashed', 'dotted', 'double']
 
@@ -230,6 +238,23 @@ export default {
       type: Boolean,
       default: false,
     },
+    /** Gövde dolgusu — `none`: kenar padding sıfır (POS ödeme vb.). */
+    bodyPadding: {
+      type: String,
+      default: 'default',
+      validator: (v) => v === 'default' || v === 'none',
+    },
+    /** Gövde düzeni — `flex`: dikey flex + taşma kontrolü (içerik paneli). */
+    bodyLayout: {
+      type: String,
+      default: 'default',
+      validator: (v) => v === 'default' || v === 'flex',
+    },
+    /** Panel `max-height` — örn. `min(85vh, 36rem)`. */
+    panelMaxHeight: {
+      type: String,
+      default: '',
+    },
     /** Üst blok (toolbar + varsayılan başlık) ile gövde arasında ayırıcı. */
     headerDivider: {
       type: Boolean,
@@ -260,8 +285,7 @@ export default {
   },
   emits: ['update:open', 'after-leave'],
   data() {
-    dialogCounter += 1
-    const id = dialogCounter
+    const id = nextDialogId()
     return {
       titleId: `ui-dialog-title-${id}`,
       descriptionId: `ui-dialog-desc-${id}`,
@@ -321,12 +345,16 @@ export default {
         'ui-surface ui-card ui-dialog-panel relative z-[1] w-full',
         this.maxWidthClass,
         borderPart,
+        this.bodyLayout === 'flex' ? 'ui-dialog-panel--body-flex' : '',
         this.$attrs.class,
       )
     },
+    panelStyle() {
+      if (!this.panelMaxHeight) return undefined
+      return { maxHeight: this.panelMaxHeight }
+    },
     passthroughAttrs() {
-      const { class: _c, ...rest } = this.$attrs
-      return rest
+      return pickPassthroughAttrs(this.$attrs, ['class'])
     },
     ariaLabelledby() {
       if (this.title != null && this.title !== '') {
@@ -349,7 +377,7 @@ export default {
       if (this.closeLabel != null && this.closeLabel !== '') {
         return this.closeLabel
       }
-      return typeof this.$t === 'function' ? this.$t('ui.dialog.close') : 'Close'
+      return resolveUiText(this, 'ui.dialog.close', 'Close')
     },
     rootLayerClasses() {
       return cn(

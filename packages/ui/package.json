@@ -4,7 +4,8 @@
   "description": "Vue 3 UI (Button, Icon), vue-i18n (tr), theme CSS, Tailwind preset",
   "type": "module",
   "sideEffects": [
-    "./themes/*.css"
+    "./themes/*.css",
+    "./themes/components/*.css"
   ],
   "files": [
     "dist",

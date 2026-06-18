@@ -117,6 +117,7 @@
 
 <script>
 import { cn } from '../utils/cn.js'
+import { resolveUiText } from '../utils/resolve-ui-text.js'
 
 const PRESET_COLORS = [
   '#f87171', '#fb923c', '#fbbf24', '#facc15', '#a3e635', '#4ade80', '#34d399', '#2dd4bf',
@@ -180,19 +181,23 @@ export default {
       },
     },
     triggerLabel() {
-      return this.triggerPlaceholder || this.$t('ui.colorPicker.triggerPlaceholder')
+      if (this.triggerPlaceholder) return this.triggerPlaceholder
+      return resolveUiText(this, 'ui.colorPicker.triggerPlaceholder', 'Pick a color')
     },
     displayValue() {
       return this.localColor || this.triggerLabel
     },
     popoverTitleLabel() {
-      return this.popoverTitle || this.$t('ui.colorPicker.popoverTitle')
+      if (this.popoverTitle) return this.popoverTitle
+      return resolveUiText(this, 'ui.colorPicker.popoverTitle', 'Color palette')
     },
     clearLabelText() {
-      return this.clearLabel || this.$t('ui.colorPicker.clear')
+      if (this.clearLabel) return this.clearLabel
+      return resolveUiText(this, 'ui.colorPicker.clear', 'Clear')
     },
     customColorLabelText() {
-      return this.customColorLabel || this.$t('ui.colorPicker.customHex')
+      if (this.customColorLabel) return this.customColorLabel
+      return resolveUiText(this, 'ui.colorPicker.customHex', 'Custom color (hex)')
     },
   },
   methods: {

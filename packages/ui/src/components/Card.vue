@@ -154,6 +154,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    /** `data-table` — sıfır kök padding; toolbar/footer DataTable boşlukları. */
+    layout: {
+      type: String,
+      default: 'default',
+      validator: (v) => v === 'default' || v === 'data-table',
+    },
   },
   computed: {
     hasDefaultHeader() {
@@ -184,6 +190,9 @@ export default {
       ]
       if (this.removePadding) {
         base.push('ui-card--no-padding')
+      }
+      if (this.layout === 'data-table') {
+        base.push('ui-card--data-table')
       }
       if (this.transparent) {
         base.push('ui-card--transparent')

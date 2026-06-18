@@ -15,7 +15,6 @@
           :id="resolvedId"
           variant="solid"
           color="input"
-          rounded
           fulled
           text-align="left"
           prefix-icon="clock"
@@ -29,19 +28,19 @@
       </template>
       <template #content>
         <div class="ui-timepicker-panel w-full p-2">
-          <div class="relative">
+          <div class="ui-timepicker-wheels">
             <div
-              class="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-10 -translate-y-1/2 rounded-lg bg-secondary/35 ring-1 ring-border"
+              class="ui-timepicker-selection-band"
               aria-hidden="true"
             />
-            <div class="relative z-[1] flex items-stretch gap-0.5">
+            <div class="ui-timepicker-wheels-row">
               <div
                 class="min-h-0 min-w-0 flex-1"
                 role="spinbutton"
                 :aria-valuenow="draftHour"
                 aria-valuemin="0"
                 aria-valuemax="23"
-                aria-label="Saat"
+                :aria-label="hourAriaLabel"
               >
                 <div
                   ref="hourWheel"
@@ -53,7 +52,10 @@
                       :key="'h-' + h"
                       type="button"
                       tabindex="-1"
-                      class="ui-timepicker-wheel-item"
+                      :class="[
+                        'ui-timepicker-wheel-item',
+                        h === draftHour ? 'ui-timepicker-wheel-item--selected' : '',
+                      ]"
                       @click="selectHour(h)"
                     >
                       {{ pad2(h) }}
@@ -62,7 +64,7 @@
                 </div>
               </div>
               <span
-                class="flex w-4 shrink-0 select-none items-center justify-center self-stretch text-sm font-normal leading-5 tabular-nums text-muted-foreground"
+                class="ui-timepicker-colon"
                 aria-hidden="true"
               >:</span>
               <div
@@ -71,7 +73,7 @@
                 :aria-valuenow="draftMinute"
                 aria-valuemin="0"
                 aria-valuemax="59"
-                aria-label="Dakika"
+                :aria-label="minuteAriaLabel"
               >
                 <div
                   ref="minuteWheel"
@@ -83,7 +85,10 @@
                       :key="'m-' + m"
                       type="button"
                       tabindex="-1"
-                      class="ui-timepicker-wheel-item"
+                      :class="[
+                        'ui-timepicker-wheel-item',
+                        m === draftMinute ? 'ui-timepicker-wheel-item--selected' : '',
+                      ]"
                       @click="selectMinute(mi)"
                     >
                       {{ pad2(m) }}
@@ -92,6 +97,14 @@
                 </div>
               </div>
             </div>
+            <div
+              class="ui-timepicker-wheels-fade ui-timepicker-wheels-fade--top"
+              aria-hidden="true"
+            />
+            <div
+              class="ui-timepicker-wheels-fade ui-timepicker-wheels-fade--bottom"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </template>
@@ -100,7 +113,10 @@
 </template>
 
 <script>
-let tpCounter = 0
+import { createUiIdFactory } from '../utils/ui-id.js'
+import { resolveUiText } from '../utils/resolve-ui-text.js'
+
+const nextTimePickerId = createUiIdFactory('ui-timepicker')
 
 /** Tekerlek satır yüksekliği — `.ui-timepicker-wheel-item` ile eşleşmeli (h-10 = 40px) */
 const WHEEL_ITEM_PX = 40
@@ -125,7 +141,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Select time',
+      default: '',
     },
     disabled: {
       type: Boolean,
@@ -143,9 +159,8 @@ export default {
   },
   emits: ['update:modelValue', 'change'],
   data() {
-    tpCounter += 1
     return {
-      fallbackId: `ui-timepicker-${tpCounter}`,
+      fallbackId: nextTimePickerId(),
       menuOpen: false,
       draftHour: 0,
       draftMinute: 0,
@@ -173,11 +188,23 @@ export default {
     hasValue() {
       return this.modelValue != null && this.modelValue !== ''
     },
+    resolvedPlaceholder() {
+      if (this.placeholder != null && this.placeholder !== '') {
+        return this.placeholder
+      }
+      return resolveUiText(this, 'ui.timePicker.placeholder', 'Select time')
+    },
+    hourAriaLabel() {
+      return resolveUiText(this, 'ui.timePicker.hourAria', 'Hour')
+    },
+    minuteAriaLabel() {
+      return resolveUiText(this, 'ui.timePicker.minuteAria', 'Minute')
+    },
     display() {
       if (this.menuOpen) {
         return `${pad2(this.draftHour)}:${pad2(this.draftMinute)}`
       }
-      if (!this.hasValue) return this.placeholder
+      if (!this.hasValue) return this.resolvedPlaceholder
       return String(this.modelValue)
     },
     supportsScrollEnd() {
@@ -241,26 +268,41 @@ export default {
       this.draftHour = h
       this.draftMinute = best
     },
+    wheelItemHeight(el) {
+      if (!el) return WHEEL_ITEM_PX
+      const item = el.querySelector('.ui-timepicker-wheel-item')
+      if (!item) return WHEEL_ITEM_PX
+      const h = item.getBoundingClientRect().height
+      return h > 0 ? h : WHEEL_ITEM_PX
+    },
     wheelSpacerTop(el) {
       if (!el) return 0
       const spacer = el.querySelector('.ui-timepicker-wheel-spacer')
-      if (!spacer) return (el.clientHeight - WHEEL_ITEM_PX) / 2
+      const itemH = this.wheelItemHeight(el)
+      if (!spacer) return (el.clientHeight - itemH) / 2
       const pt = parseFloat(window.getComputedStyle(spacer).paddingTop)
-      return Number.isFinite(pt) ? pt : (el.clientHeight - WHEEL_ITEM_PX) / 2
+      return Number.isFinite(pt) ? pt : (el.clientHeight - itemH) / 2
     },
     indexFromScroll(el, maxIndex) {
+      const itemH = this.wheelItemHeight(el)
       const spacer = this.wheelSpacerTop(el)
       const center = el.scrollTop + el.clientHeight / 2
-      const idx = Math.round((center - spacer - WHEEL_ITEM_PX / 2) / WHEEL_ITEM_PX)
+      const idx = Math.round((center - spacer - itemH / 2) / itemH)
       return Math.min(maxIndex, Math.max(0, idx))
     },
     scrollTopForIndex(el, idx) {
+      const itemH = this.wheelItemHeight(el)
       const spacer = this.wheelSpacerTop(el)
-      return Math.max(0, spacer + idx * WHEEL_ITEM_PX + WHEEL_ITEM_PX / 2 - el.clientHeight / 2)
+      return Math.max(0, spacer + idx * itemH + itemH / 2 - el.clientHeight / 2)
     },
-    scrollWheelToIndex(el, idx) {
+    scrollWheelToIndex(el, idx, { smooth = false } = {}) {
       if (!el) return
-      el.scrollTop = this.scrollTopForIndex(el, idx)
+      const top = this.scrollTopForIndex(el, idx)
+      if (smooth && typeof el.scrollTo === 'function') {
+        el.scrollTo({ top, behavior: 'smooth' })
+      } else {
+        el.scrollTop = top
+      }
     },
     scrollWheelsToDraft() {
       this.wheelSyncing = true
@@ -268,13 +310,11 @@ export default {
       const mv = this.minuteValues
       let mi = mv.indexOf(this.draftMinute)
       if (mi === -1) mi = 0
-      const apply = () => {
+      this.scrollWheelToIndex(this.$refs.hourWheel, hi)
+      this.scrollWheelToIndex(this.$refs.minuteWheel, mi)
+      requestAnimationFrame(() => {
         this.scrollWheelToIndex(this.$refs.hourWheel, hi)
         this.scrollWheelToIndex(this.$refs.minuteWheel, mi)
-      }
-      apply()
-      requestAnimationFrame(() => {
-        apply()
         requestAnimationFrame(() => {
           this.wheelSyncing = false
         })
@@ -283,11 +323,11 @@ export default {
     selectHour(h) {
       this.draftHour = h
       this.wheelSyncing = true
-      this.scrollWheelToIndex(this.$refs.hourWheel, h)
-      requestAnimationFrame(() => {
+      this.scrollWheelToIndex(this.$refs.hourWheel, h, { smooth: true })
+      window.setTimeout(() => {
         this.wheelSyncing = false
         this.emitDraft()
-      })
+      }, 220)
     },
     selectMinute(mi) {
       const mv = this.minuteValues
@@ -295,11 +335,11 @@ export default {
       const idx = Math.min(mv.length - 1, Math.max(0, mi))
       this.draftMinute = mv[idx]
       this.wheelSyncing = true
-      this.scrollWheelToIndex(this.$refs.minuteWheel, idx)
-      requestAnimationFrame(() => {
+      this.scrollWheelToIndex(this.$refs.minuteWheel, idx, { smooth: true })
+      window.setTimeout(() => {
         this.wheelSyncing = false
         this.emitDraft()
-      })
+      }, 220)
     },
     bindWheelListeners() {
       this.unbindWheelListeners()
@@ -308,16 +348,24 @@ export default {
       if (!hourEl || !minuteEl) return
 
       if (this.supportsScrollEnd) {
+        hourEl.addEventListener('scroll', this.onHourScrollLive, { passive: true })
+        minuteEl.addEventListener('scroll', this.onMinuteScrollLive, { passive: true })
         hourEl.addEventListener('scrollend', this.onHourScrollEnd)
         minuteEl.addEventListener('scrollend', this.onMinuteScrollEnd)
         this._wheelUnsub = () => {
+          hourEl.removeEventListener('scroll', this.onHourScrollLive)
+          minuteEl.removeEventListener('scroll', this.onMinuteScrollLive)
           hourEl.removeEventListener('scrollend', this.onHourScrollEnd)
           minuteEl.removeEventListener('scrollend', this.onMinuteScrollEnd)
         }
       } else {
+        hourEl.addEventListener('scroll', this.onHourScrollLive, { passive: true })
+        minuteEl.addEventListener('scroll', this.onMinuteScrollLive, { passive: true })
         hourEl.addEventListener('scroll', this.onHourScrollDebounced, { passive: true })
         minuteEl.addEventListener('scroll', this.onMinuteScrollDebounced, { passive: true })
         this._wheelUnsub = () => {
+          hourEl.removeEventListener('scroll', this.onHourScrollLive)
+          minuteEl.removeEventListener('scroll', this.onMinuteScrollLive)
           hourEl.removeEventListener('scroll', this.onHourScrollDebounced)
           minuteEl.removeEventListener('scroll', this.onMinuteScrollDebounced)
         }
@@ -330,6 +378,20 @@ export default {
       }
       clearTimeout(this._hourScrollTimer)
       clearTimeout(this._minuteScrollTimer)
+    },
+    onHourScrollLive() {
+      if (this.wheelSyncing) return
+      const el = this.$refs.hourWheel
+      if (!el) return
+      this.draftHour = this.indexFromScroll(el, 23)
+    },
+    onMinuteScrollLive() {
+      if (this.wheelSyncing) return
+      const el = this.$refs.minuteWheel
+      const mv = this.minuteValues
+      if (!el || !mv.length) return
+      const idx = this.indexFromScroll(el, mv.length - 1)
+      this.draftMinute = mv[idx]
     },
     onHourScrollDebounced() {
       if (this.wheelSyncing) return

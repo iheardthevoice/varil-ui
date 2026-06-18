@@ -9,8 +9,9 @@
 
 <script>
 import { cn } from '../utils/cn.js'
+import { createUiIdFactory } from '../utils/ui-id.js'
 
-let tabsRootCounter = 0
+const nextTabsId = createUiIdFactory('ui-tabs')
 
 const VARIANTS = ['line', 'segmented']
 
@@ -35,12 +36,17 @@ export default {
       default: 'horizontal',
       validator: (v) => v === 'horizontal' || v === 'vertical',
     },
+    /** `full` — segmented tab listesi tam genişlik (hub / show sayfaları). */
+    fit: {
+      type: String,
+      default: '',
+      validator: (v) => v === '' || v === 'full',
+    },
   },
   emits: ['update:modelValue'],
   data() {
-    tabsRootCounter += 1
     return {
-      baseId: `ui-tabs-${tabsRootCounter}`,
+      baseId: nextTabsId(),
     }
   },
   provide() {
@@ -54,6 +60,7 @@ export default {
         'ui-tabs flex min-w-0 flex-col gap-4',
         this.variant === 'segmented' ? 'ui-tabs--segmented' : 'ui-tabs--line',
         this.orientation === 'vertical' ? 'ui-tabs--vertical' : '',
+        this.fit === 'full' ? 'ui-tabs--fit-full' : '',
         this.$attrs.class,
       )
     },

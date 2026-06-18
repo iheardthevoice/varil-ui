@@ -86,6 +86,11 @@ export default {
       thisMonth: 'Bu ay ({month})',
       lastMonth: 'Geçen ay ({month})',
     },
+    timePicker: {
+      placeholder: 'Saat seçin',
+      hourAria: 'Saat',
+      minuteAria: 'Dakika',
+    },
     photo: {
       fallbackAlt: 'Görsel',
       previewAria: 'Görsel önizleme',

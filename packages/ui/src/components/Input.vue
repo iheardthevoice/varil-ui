@@ -77,8 +77,10 @@
 
 <script>
 import { cn } from '../utils/cn.js'
+import { createUiIdFactory } from '../utils/ui-id.js'
+import { pickPassthroughAttrs } from '../utils/pick-passthrough-attrs.js'
 
-let idCounter = 0
+const nextInputId = createUiIdFactory('ui-input')
 
 const SIZES = ['sm', 'md', 'lg']
 
@@ -155,8 +157,7 @@ export default {
   },
   emits: ['update:modelValue', 'input', 'change', 'focus', 'blur'],
   data() {
-    idCounter += 1
-    return { fallbackId: `ui-input-${idCounter}` }
+    return { fallbackId: nextInputId() }
   },
   computed: {
     resolvedSize() {
@@ -184,7 +185,7 @@ export default {
       return this.fallbackId
     },
     passthroughAttrs() {
-      const skip = new Set([
+      return pickPassthroughAttrs(this.$attrs, [
         'class',
         'style',
         'type',
@@ -198,13 +199,6 @@ export default {
         'autocomplete',
         'maxlength',
       ])
-      const out = {}
-      for (const [key, val] of Object.entries(this.$attrs)) {
-        if (!skip.has(key)) {
-          out[key] = val
-        }
-      }
-      return out
     },
   },
   methods: {
