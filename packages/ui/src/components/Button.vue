@@ -405,7 +405,8 @@ export default {
 
       const variantColor =
         VARIANT_COLOR_CLASSES[this.variant]?.[this.color] ||
-        VARIANT_COLOR_CLASSES.solid.primary
+        VARIANT_COLOR_CLASSES.solid?.primary ||
+        'border-0 bg-primary text-primary-foreground shadow-none hover:opacity-90'
 
       const isBlock = this.fulled || this.block
 

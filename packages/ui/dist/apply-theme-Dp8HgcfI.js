@@ -720,13 +720,13 @@ const vt = ["sm", "md", "lg"], kt = ["solid", "outline", "ghost", "link", "nav"]
       return { sm: "xs", md: "sm", lg: "sm" }[this.size] || "sm";
     },
     buttonClasses() {
-      var s;
+      var s, d;
       const e = this.variant === "link", t = this.variant === "nav";
       let i;
       this.cubed && !e && !t ? i = ue[this.size] || ue.md : e ? i = xt[this.size] : t ? i = "h-auto min-h-0 w-full max-w-full justify-start overflow-hidden p-0 !min-h-0" : i = de[this.size] || de.md;
       let r = "";
       !e && !t && (this.rounded && !this.cubed || this.cubed) && (r = "rounded-full");
-      const a = ((s = ce[this.variant]) == null ? void 0 : s[this.color]) || ce.solid.primary, n = this.fulled || this.block;
+      const a = ((s = ce[this.variant]) == null ? void 0 : s[this.color]) || ((d = ce.solid) == null ? void 0 : d.primary), n = this.fulled || this.block;
       return [
         "ui-button ui-control font-sans",
         a,
@@ -4423,4 +4423,4 @@ export {
   Pe as t,
   ts as u
 };
-//# sourceMappingURL=apply-theme-DQ5kgGib.js.map
+//# sourceMappingURL=apply-theme-Dp8HgcfI.js.map
